@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhiyou.ssm.mapper.FrontCourseMapper">
+	<resultMap type="com.zhiyou.ssm.model.Course" id="map1">
+		<id column="id" property="id"/>
+		<result column="course_name" property="course_name"/>
+		<result column="course_descr" property="course_descr"/>
+		<result column="subject_id" property="subject_id"/>
+		<association property="subject" javaType="subject">
+			<result column="subject_id" property="id"/>
+			<result column="subject_name" property="subject_name" />
+		</association>
+		<collection property="videolist" javaType="ArrayList"
+			ofType="Video">
+			<result column="vid" property="id" />
+			<result column="id" property="course_id" />
+			<result column="video_title" property="video_title" />
+			<result column="video_image_url" property="video_image_url" />
+			<result column="video_length" property="video_length" />
+			<result column="video_play_times" property="video_play_times" />
+		</collection>
+	</resultMap> 
+	<resultMap type="com.zhiyou.ssm.model.Course" id="map2">
+		<id column="id" property="id" />
+		<result column="course_name" property="course_name" />
+		<result column="course_descr" property="course_descr" />
+		<result column="subject_id" property="subject_id" />
+		<collection property="videolist" javaType="ArrayList"
+			ofType="Video">
+			<result column="vid" property="id" />
+			<result column="id" property="course_id" />
+			<result column="video_title" property="video_title" />
+			<result column="video_image_url" property="video_image_url" />
+			<result column="video_length" property="video_length" />
+			<result column="video_play_times" property="video_play_times" />
+		</collection>
+	</resultMap>
+	<select id="selectAllInfoBySubjectId" parameterType="Integer"
+		resultMap="map1">
+		select 
+		c.id,c.course_name,c.course_descr,c.subject_id,
+		s.subject_name,
+		v.id vid,v.video_title,v.video_image_url,v.video_length,v.video_play_times
+		from course c
+		left join subject s on c.subject_id = s.id
+		left join video v on c.id = v.course_id
+		where c.subject_id = #{subject_id}
+	</select>
+
+	<select id="selectCourseBySubjectId" parameterType="Integer"
+		resultMap="map2">
+		select
+		c.id,c.course_name,c.course_descr,c.subject_id,v.id vid,
+		v.video_title,v.video_image_url,v.video_length,v.video_play_times
+		from course c
+		left join video
+		v on c.id = v.course_id
+		where c.subject_id = #{subject_id}
+	</select>
+</mapper>

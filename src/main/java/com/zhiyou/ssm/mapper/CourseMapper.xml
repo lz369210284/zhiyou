@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhiyou.ssm.mapper.CourseMapper">
+	<insert id="addCourse" parameterType="course">
+		insert into course values(null,#{course_name},#{course_descr},null,null,#{subject_id})
+	</insert>
+	<update id="updateCourse" parameterType="course">
+		update course set course_name = #{course_name},subject_id = #{subject_id},course_descr = #{course_descr}
+			 where id = #{id}
+	</update>
+		<delete id="deleteCourse" parameterType="Integer">
+		delete from course where id = #{id}
+	</delete>
+	<select id="selectAllCourse" resultType="course">
+select * from course
+</select>
+	<select id="selectCourseById" parameterType="Integer" resultType="course">
+		select c.*,s.subject_name subject_name from course c left join subject s on c.subject_id = s.id where c.id = #{id}
+	</select>
+<select id="selectAllCourseName" resultType="course">
+select * from course
+</select>
+<select id="selectCourseNameByCourseId" parameterType="Integer" resultType="String">
+select course_name from course where id = #{course_id}
+</select>
+<select id="selectCourseCountByCondition" parameterType="condition"
+		resultType="Integer">
+		select count(*) from course c left join subject s on c.subject_id = s.id 
+	</select>
+	<select id="selectCourseByCondition" parameterType="condition"
+		resultType="course">
+		select c.*,s.subject_name subject_name 
+		from course c left join subject s on c.subject_id = s.id 
+		LIMIT #{item},5
+	</select>
+</mapper>

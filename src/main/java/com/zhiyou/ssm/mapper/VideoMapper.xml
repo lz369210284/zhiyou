@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhiyou.ssm.mapper.VideoMapper">
+	<insert id="addVideo" parameterType="video">
+		insert into video values(null,#{video_title},#{speaker_id},#{course_id},#{video_length},#{video_image_url},#{video_url},#{video_descr},null,null,#{video_play_times})
+	</insert>
+	<update id="updateVideo">
+		update video set video_title = #{video_title},speaker_id = #{speaker_id},course_id = #{course_id},
+			video_length = #{video_length},video_image_url = #{video_image_url},video_url = #{video_url},video_descr = #{video_descr} 
+			where id = #{id}
+	</update>
+	<delete id="deleteVideo" parameterType="Integer">
+		delete from video where id = #{id}
+	</delete>
+	<delete id="deleteManyVideo" parameterType="Condition">
+		delete from video where id in ${ids}
+	</delete>
+	<select id="selectAvgVideo" resultType="video">
+	select avg(video_play_times) video_play_times,c.course_name course_name
+	from video left join course c on course_id = c.id GROUP BY course_id
+	</select>
+	<select id="selectVideoById" parameterType="Integer" resultType="video">
+		select * from video where id = #{id}
+	</select>
+	<select id="selectAllVideo" resultType="video">
+		select v.*,s.speaker_name speaker_name,c.course_name course_name
+		from video v LEFT JOIN speaker s on v.speaker_id = s.id
+		LEFT JOIN course c on v.course_id = c.id
+	</select>
+	<select id="selectVideoCountByCondition" parameterType="condition"
+		resultType="Integer">
+		select count(*)
+		from video v LEFT JOIN speaker s on v.speaker_id = s.id
+		LEFT JOIN course c on v.course_id = c.id
+		<where>
+			<if test="video_title != null and video_title != ''">
+				and v.video_title like '%' #{video_title} '%'
+			</if>
+			<if test="speaker_name != null and speaker_name != ''">
+				and s.speaker_name like '%' #{speaker_name} '%'
+			</if>
+			<if test="course_name != null and course_name != ''">
+				and c.course_name like '%' #{course_name} '%'
+			</if>
+		</where>
+	</select>
+	<select id="selectVideoByCondition" parameterType="condition"
+		resultType="video">
+		select v.*,s.speaker_name speaker_name,c.course_name course_name
+		from video v LEFT JOIN speaker s on v.speaker_id = s.id
+		LEFT JOIN course c on v.course_id = c.id
+		<where>
+			<if test="video_title != null and video_title != ''">
+				and v.video_title like '%' #{video_title} '%'
+			</if>
+			<if test="speaker_name != null and speaker_name != ''">
+				and s.speaker_name like '%' #{speaker_name} '%'
+			</if>
+			<if test="course_name != null and course_name != ''">
+				and c.course_name like '%' #{course_name} '%'
+			</if>
+		</where>
+		LIMIT #{item},5
+	</select>
+</mapper>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhiyou.ssm.mapper.FrontVideoMapper">
+	<resultMap type="com.zhiyou.ssm.model.Video" id="map1">
+		<id column="id" property="id" />
+		<result column="speaker_id" property="speaker_id" />
+		<result column="course_id" property="course_id" />
+		<result column="video_url" property="video_url" />
+		<result column="video_image_url" property="video_image_url" />
+		<result column="video_title" property="video_title" />
+		<result column="video_descr" property="video_descr" />
+		<result column="video_play_times" property="video_play_times" />
+		<association property="course" javaType="course">
+			<result column="course_id" property="id" />
+			<result column="course_descr" property="course_descr" />
+		</association>
+		<association property="speaker" javaType="speaker">
+			<result column="speaker_id" property="id" />
+			<result column="speaker_head_url" property="speaker_head_url" />
+			<result column="speaker_name" property="speaker_name" />
+			<result column="speaker_descr" property="speaker_descr" />
+		</association>
+	</resultMap>
+	<update id="UpdateVideoPlayTimesByVideoId" parameterType="Integer">
+	update video set video_play_times = #{video_play_times} where id = #{id}
+	</update>
+	<select id="selectVideoByVideoId" parameterType="Integer" resultMap="map1">
+		select
+		v.id,v.speaker_id,v.course_id,v.video_url,v.video_image_url,v.video_title,v.video_descr,v.video_play_times,
+		s.speaker_head_url,s.speaker_name,s.speaker_descr,c.course_descr
+		from video v
+		left join course c on v.course_id = c.id
+		left join speaker s on v.speaker_id = s.id
+		where v.id = #{videoId}
+	</select>
+	<select id="selectVideoBySpeakerId" parameterType="Integer" resultType="video"> 
+		select v.*,s.speaker_name speaker_name
+		from video v 
+		left join speaker s on v.speaker_id = s.id 
+		where speaker_id = #{speakerid}
+	</select>
+</mapper>

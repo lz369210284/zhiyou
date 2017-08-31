@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhiyou.ssm.mapper.FrontUserMapper">
+<resultMap type="com.zhiyou.ssm.model.Admin" id="map1">
+<result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+<result column="head_url" property="headUrl" jdbcType="VARCHAR" />
+<result column="insert_time" property="insertTime" jdbcType="TIMESTAMP" />
+<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+</resultMap>
+<update id="updateAdminInfo" parameterType="admin" >
+update user set nick_name = #{nickName},sex = #{sex},birthday = #{birthday},province = #{province},city = #{city} where id = #{id}
+</update>
+<update id="updateAdminHeadUrl" parameterType="admin" >
+update user set head_url = #{headUrl} where id = #{id}
+</update>
+<update id="updatePassword" parameterType="admin" >
+update user set password = #{password} where id = #{id}
+</update>
+</mapper>
