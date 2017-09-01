@@ -32,13 +32,11 @@ public class FrontVideoController {
 	
 	@RequestMapping("/videoData.action")
 	public String videoData(Integer videoId,Integer subjectId,Model md){
-		System.out.println(videoId);
+
 		Video video = fvs.selectVideoByVideoId(videoId);
-		System.out.println(video);
-		System.out.println(video.getCourse());
-		System.out.println(video.getSpeaker());
+
 		List<Video> videolist = fvs.selectVideoBySpeakerId(video.getSpeaker().getId());
-		System.out.println(videolist);
+
 		md.addAttribute("video", video);
 		md.addAttribute("course", video.getCourse());
 		md.addAttribute("speaker", video.getSpeaker());

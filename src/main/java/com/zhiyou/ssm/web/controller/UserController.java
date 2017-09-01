@@ -35,17 +35,17 @@ public class UserController {
 		User user = us.login(login_name, pwd);
 		if(user!=null){
 			session.setAttribute("user", user);
-			/*return "forward:/video/selectVideoByCondition.action";*/
-			/*return "redirect:/video/selectVideoByCondition.action";*/
 			return "forward:/WEB-INF/view/head.jsp";
 		}
 		return "forward:login.jsp";
 	}
+
 	
+
 	
 	@RequestMapping("/loginout.action")
 	public String loginout(HttpSession session,Model md){
-		session.invalidate();
+		session.removeAttribute("user");
 		return "forward:/front/admin/back/login.action";
 	}
 }

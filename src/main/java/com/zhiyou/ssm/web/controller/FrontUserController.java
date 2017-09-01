@@ -26,7 +26,7 @@ public class FrontUserController {
 	
 	@RequestMapping("/logout.action")
 	public String logout(HttpSession session){
-		session.invalidate();
+		session.removeAttribute("_front_user");
 		return "redirect:/index.jsp";
 	}
 	
